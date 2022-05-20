@@ -2,6 +2,7 @@
 
 import lumos
 import chess
+import chess.engine
 import math
 import time
 import random
@@ -26,6 +27,7 @@ king_arr = "0000011011110000"
 queen_arr = "0000011001100000"
 empty_arr = "0000000000000000"
 
+engine = chess.engine.SimpleEngine.popen_uci(r"/home/pi/miker/Stockfish-sf_15/src/stockfish")
 
 class Canvas():
 	the_canvas = ""
@@ -192,9 +194,10 @@ def game_loop(console_output=False, delay=2):
 	output = canvas.print if console_output else canvas.lumos
 	output()
 	while 1:
-		moves = list(board.legal_moves)
-		move = moves[random.randint(0, len(moves)-1)]
-		board.push(move)
+		#moves = list(board.legal_moves)
+		#move = moves[random.randint(0, len(moves)-1)]
+		result = engine.play(board, chess.engine.Limit(time=0.1))
+		board.push(result.move)
 		get_board_frame(board.fen())
 		output()
 		# blink the board 5 times if the game is finished
@@ -228,5 +231,5 @@ def game_loop(console_output=False, delay=2):
 #canvas.set_piece(rook1, 0)
 #canvas.set_piece(rook2, 1)
 #canvas.print()
-game_loop(console_output=True, delay=1)
+game_loop(console_output=True, delay=10)
 	
