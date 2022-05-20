@@ -94,6 +94,7 @@ def print_pixel(r,g,b):
 	gh = int("0x"+g, 16)
 	bh = int("0x"+b, 16)
 	print("\x1B[48;2;" + f"{rh};{gh};{bh}m", ENDC, end="")
+	print("\x1B[48;2;" + f"{rh};{gh};{bh}m", ENDC, end="")
 
 
 
