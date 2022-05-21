@@ -6,9 +6,8 @@ authors = ["Mike Rosseel <mike.rosseel@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
-serial = "^0.0.97"
-pyserial = "^3.5"
 python-chess = "^1.999"
+pyserial = "^3.5"
 
 [tool.poetry.dev-dependencies]
 

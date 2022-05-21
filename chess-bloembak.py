@@ -6,6 +6,8 @@ import chess.engine
 import math
 import time
 import random
+import os
+import serial
 
 # color of a piece owned by the black player
 black_piece = "000000"
@@ -59,8 +61,7 @@ class Canvas():
 		count = 1
 		if frame == None:
 			frame = self.the_canvas
-		import os
-		os.system('cls||clear')
+		os.system('clear')
 		#print(chr(27) + "[2J")
 		for i in range(0, len(frame), 6):
 			r = frame[i:i+2]
@@ -231,5 +232,5 @@ def game_loop(console_output=False, delay=2):
 #canvas.set_piece(rook1, 0)
 #canvas.set_piece(rook2, 1)
 #canvas.print()
-game_loop(console_output=True, delay=10)
+game_loop(console_output=False, delay=10)
 	
