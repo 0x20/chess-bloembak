@@ -10,11 +10,11 @@ import os
 import serial
 
 # color of a piece owned by the black player
-black_piece = "b58863"
+black_piece = "550000"
 # color of a piece owned by the white player
 white_piece = "ffffff"
 # board color white
-white = "f0d9b5"
+white = "222222"
 # board color for black
 #black= "b58863"
 black= "000000"
@@ -233,5 +233,5 @@ def game_loop(console_output=False, delay=2):
 #canvas.set_piece(rook1, 0)
 #canvas.set_piece(rook2, 1)
 #canvas.print()
-game_loop(console_output=False, delay=10)
+game_loop(console_output=True, delay=10)
 
