@@ -1,4 +1,12 @@
 [[package]]
+name = "argparse"
+version = "1.4.0"
+description = "Python command-line parsing library"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "chess"
 version = "1.9.0"
 description = "A chess library with move generation and validation, Polyglot opening book probing, PGN reading and writing, Gaviota tablebase probing, Syzygy tablebase probing, and XBoard/UCI engine communication."
@@ -31,9 +39,13 @@ chess = ">=1,<2"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "afb5419df9320c1dc5c34cb35c01484ed1456be154b7454b6db502ff063756f2"
+content-hash = "5404cc5602c895a052c4d11fc8395689f1a96431e88bac5a89377f1236cba1bf"
 
 [metadata.files]
+argparse = [
+    {file = "argparse-1.4.0-py2.py3-none-any.whl", hash = "sha256:c31647edb69fd3d465a847ea3157d37bed1f95f19760b11a47aa91c04b666314"},
+    {file = "argparse-1.4.0.tar.gz", hash = "sha256:62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4"},
+]
 chess = [
     {file = "chess-1.9.0-py3-none-any.whl", hash = "sha256:02d1169a3db21451216474971f95b0609f4a22a18d2ced591a04b038357838fb"},
     {file = "chess-1.9.0.tar.gz", hash = "sha256:7791833312ca930821a415d01e5b743e99fb540d65cae6cca0e02ba6a352a452"},

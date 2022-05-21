@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-import lumos
 import chess
 import chess.engine
 import math
 import time
-import random
 import os
-import serial
+import logging
+import argparse
+lumos = None
 
 # color of a piece owned by the black player
 black_piece = "550000"
@@ -31,7 +31,7 @@ queen_arr = "0000011001100000"
 empty_arr = "0000000000000000"
 
 engine = chess.engine.SimpleEngine.popen_uci(r"/home/pi/miker/Stockfish-sf_15/src/stockfish")
-
+engine.configure({"Threads": 4})
 class Canvas():
 	the_canvas = ""
 	CANVAS_LENGTH = 32*32*6
@@ -41,10 +41,10 @@ class Canvas():
 		assert len(self.the_canvas) == self.CANVAS_LENGTH
 
 	def pos_to_index(self, pos):
-	    pos_in_row = pos%8
-	    rows = math.floor(pos/8)
-	    start = rows*768 + pos_in_row * 6*4
-	    return start
+		pos_in_row = pos%8
+		rows = math.floor(pos/8)
+		start = rows*768 + pos_in_row * 6*4
+		return start
 
 	def set_piece(self, sub_frame, position):
 		#print(f"Setting piece with subframe {sub_frame} on pos {position}")
@@ -193,6 +193,8 @@ def get_board_frame(fen, black_board_color=black, white_board_color=white):
 
 
 def game_loop(console_output=False, delay=2):
+	if not console_output:
+		import lumos
 	output = canvas.print if console_output else canvas.lumos
 	output()
 	while 1:
@@ -217,21 +219,34 @@ def game_loop(console_output=False, delay=2):
 		time.sleep(delay)
 
 
-#print_frame(frame)
-#print_frame(knight, line=4)
-#print_frame(rook, line=4)
-#print_frame(pawn, line=4)
-#print_frame(bishop, line=4)
-#print_frame(queen, line=4)
-#print_frame(king, line=4)
-#print(board)
-#print_frame(get_board_frame(board.fen()))
-#lumos.push(frame, 1)
+if __name__ == "__main__":
+	logger = logging.getLogger()
+	logger.setLevel(logging.INFO)
+	logging.basicConfig(format="%(asctime)s %(name)s: %(levelname)s %(message)s")
+	parser = argparse.ArgumentParser(description="munipack automation cli")
+	parser.add_argument(
+		"--ascii",
+		help="outputs the frames on the terminal",
+		action="store_true",
+		default=False,
+	)
+	parser.add_argument(
+		"-x", "--verbose", help="Set logging to debug mode", action="store_true"
+	)
+	parser.add_argument(
+		"-r",
+		"--resultdir",
+		help="The directory where all results will be written",
+		nargs="?",
+		required=True,
+	)
+	parser.add_argument(
+		"--fitsdir",
+		help="The dir where the fits are, only needed to plate-solve the reference frame",
+		required=False,
+	)
+	args = parser.parse_args()
+	if args.verbose:
+			logger.setLevel(logging.DEBUG)
 
-#rook1 = create_piece(rook_arr, black, black_piece)
-#rook2 = create_piece(rook_arr, white, black_piece)
-#canvas.set_piece(rook1, 0)
-#canvas.set_piece(rook2, 1)
-#canvas.print()
-game_loop(console_output=True, delay=10)
-
+	game_loop(console_output=args.ascii, delay=10)
