@@ -10,13 +10,14 @@ import os
 import serial
 
 # color of a piece owned by the black player
-black_piece = "000000"
+black_piece = "b58863"
 # color of a piece owned by the white player
 white_piece = "ffffff"
 # board color white
 white = "f0d9b5"
 # board color for black
-black= "b58863"
+#black= "b58863"
+black= "000000"
 # resets the terminal color
 ENDC = '\033[0m'
 
@@ -44,7 +45,7 @@ class Canvas():
 	    rows = math.floor(pos/8)
 	    start = rows*768 + pos_in_row * 6*4
 	    return start
-	
+
 	def set_piece(self, sub_frame, position):
 		#print(f"Setting piece with subframe {sub_frame} on pos {position}")
 		#self.print(frame=sub_frame, line=4)
@@ -70,14 +71,14 @@ class Canvas():
 			print_pixel(r,g,b)
 			if count == line:
 				print("")
-				count = 0	
+				count = 0
 			count = count + 1
 
 	def lumos(self):
 		lumos.push(self.the_canvas, 1)
-		
-				
-		
+
+
+
 board = chess.Board()
 canvas = Canvas()
 
@@ -130,7 +131,7 @@ def print_frame(frame, line=32):
 		print_pixel(r,g,b)
 		if count == line:
 			print("")
-			count = 0	
+			count = 0
 		count = count + 1
 
 def get_board_frame(fen, black_board_color=black, white_board_color=white):
@@ -141,55 +142,55 @@ def get_board_frame(fen, black_board_color=black, white_board_color=white):
 	position = 0
 	#print(board_fen)
 	for cased_char in board_fen:
-		piece_color = white_piece if cased_char.isupper() else black_piece 
-		board_color = board_colors[board_counter%2] 
+		piece_color = white_piece if cased_char.isupper() else black_piece
+		board_color = board_colors[board_counter%2]
 		#print(f"board color: {board_color}, piece color: {piece_color}")
 		char = cased_char.lower()
 		result = ""
 		if char == 'r':
-			result = create_piece(rook_arr, board_color, piece_color)	
+			result = create_piece(rook_arr, board_color, piece_color)
 			canvas.set_piece(result, position)
 			board_counter = board_counter + 1
 			position = position + 1
 		elif char == 'n':
-			result = create_piece(knight_arr, board_color, piece_color)	
+			result = create_piece(knight_arr, board_color, piece_color)
 			canvas.set_piece(result, position)
 			board_counter = board_counter + 1
 			position = position + 1
 		elif char == 'b':
-			result = create_piece(bishop_arr, board_color, piece_color)	
+			result = create_piece(bishop_arr, board_color, piece_color)
 			canvas.set_piece(result, position)
 			board_counter = board_counter + 1
 			position = position + 1
 		elif char == 'q':
-			result = create_piece(queen_arr, board_color, piece_color)	
+			result = create_piece(queen_arr, board_color, piece_color)
 			canvas.set_piece(result, position)
 			board_counter = board_counter + 1
 			position = position + 1
 		elif char == 'k':
-			result = create_piece(king_arr, board_color, piece_color)	
+			result = create_piece(king_arr, board_color, piece_color)
 			canvas.set_piece(result, position)
 			board_counter = board_counter + 1
 			position = position + 1
 		elif char == 'p':
-			result = create_piece(pawn_arr, board_color, piece_color)	
+			result = create_piece(pawn_arr, board_color, piece_color)
 			canvas.set_piece(result, position)
 			board_counter = board_counter + 1
 			position = position + 1
 		elif char == '/':
-			result = "" 
+			result = ""
 			board_counter = board_counter + 1
 		else:
 			#print("unrecognized char", char)
 			number = int(char)
 			for i in range(0,number):
-				board_color = board_colors[board_counter%2] 
+				board_color = board_colors[board_counter%2]
 				board_counter = board_counter + 1
 				result = create_piece(empty_arr, board_color, board_color)
 				canvas.set_piece(result, position)
 				position = position + 1
 
-	
+
 
 def game_loop(console_output=False, delay=2):
 	output = canvas.print if console_output else canvas.lumos
@@ -205,13 +206,13 @@ def game_loop(console_output=False, delay=2):
 		if board.outcome() is not None:
 			print("board outcome is ", board.outcome())
 			for i in range(0,5):
-				get_board_frame(board.fen(), black_board_color=white, white_board_color=black)	
+				get_board_frame(board.fen(), black_board_color=white, white_board_color=black)
 				output()
 				time.sleep(delay/4)
-				get_board_frame(board.fen())	
+				get_board_frame(board.fen())
 				output()
 				time.sleep(delay/4)
-			time.sleep(delay*10)	
+			time.sleep(delay*10)
 			board.reset()
 		time.sleep(delay)
 
@@ -227,10 +228,10 @@ def game_loop(console_output=False, delay=2):
 #print_frame(get_board_frame(board.fen()))
 #lumos.push(frame, 1)
 
-#rook1 = create_piece(rook_arr, black, black_piece)	
-#rook2 = create_piece(rook_arr, white, black_piece)	
+#rook1 = create_piece(rook_arr, black, black_piece)
+#rook2 = create_piece(rook_arr, white, black_piece)
 #canvas.set_piece(rook1, 0)
 #canvas.set_piece(rook2, 1)
 #canvas.print()
 game_loop(console_output=False, delay=10)
-	
+
