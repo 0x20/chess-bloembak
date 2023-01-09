@@ -31,8 +31,10 @@ queen_arr = "0000011001100000"
 empty_arr = "0000000000000000"
 
 
-
 class Canvas():
+    """ A class to represent a chess board with a canvas of 32x32 pixels.
+        The board contains 8x8 chess board fields (rooks, knights, pawns, etc.)
+    """
     the_canvas = ""
     CANVAS_LENGTH = 32*32*6
 
@@ -41,7 +43,7 @@ class Canvas():
         assert len(self.the_canvas) == self.CANVAS_LENGTH
 
     def pos_to_index(self, pos):
-        pos_in_row = pos%8
+        pos_in_row = pos % 8
         rows = math.floor(pos/8)
         start = rows*768 + pos_in_row * 6*4
         return start
@@ -60,7 +62,7 @@ class Canvas():
 
     def print(self, frame=None, line=32):
         count = 1
-        if frame == None:
+        if frame is None:
             frame = self.the_canvas
         os.system('clear')
         #print(chr(27) + "[2J")
@@ -77,6 +79,7 @@ class Canvas():
     def lumos(self):
         lumos.push(self.the_canvas, 1)
 
+
 def create_piece(arr, back_color, piece_color):
     result = ""
     assert len(arr) == 16
@@ -87,6 +90,7 @@ def create_piece(arr, back_color, piece_color):
             result = result + piece_color
     assert len(result) == 16*6
     return result
+
 
 def print_pixel(r,g,b):
     rh = int("0x"+r, 16)
@@ -117,6 +121,7 @@ other_line_full = other_line * 4
 
 frame = (start_line_full + other_line_full) * 4
 
+
 def print_frame(frame, line=32):
     #print(f"len frame is {len(frame)}")
     count = 1
@@ -129,6 +134,7 @@ def print_frame(frame, line=32):
             print("")
             count = 0
         count = count + 1
+
 
 def get_board_frame(fen, black_board_color=black, white_board_color=white):
     frame = ""
@@ -203,8 +209,9 @@ def game_loop(engine, console_output=False, delay=2):
         # blink the board 5 times if the game is finished
         if board.outcome() is not None:
             print("board outcome is ", board.outcome())
-            for i in range(0,5):
-                get_board_frame(board.fen(), black_board_color=white, white_board_color=black)
+            for _ in range(0, 5):
+                get_board_frame(board.fen(), black_board_color=white,
+                                white_board_color=black)
                 output()
                 time.sleep(delay/4)
                 get_board_frame(board.fen())

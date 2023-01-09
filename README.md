@@ -19,4 +19,10 @@ make build ARCH=armv7
 
 # Running
 
+Running on bloembak-compatible hardware
+
 `./chess-bloembak.py`
+
+Running on a mac with a homebrew installed stockfish, showing the ascii board
+
+`./chess-bloembak.py -e /opt/homebrew/bin/stockfish --ascii`
