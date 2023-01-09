@@ -16,8 +16,8 @@ white_piece = "ffffff"
 # board color white
 white = "222222"
 # board color for black
-#black= "b58863"
-black= "000000"
+# black= "b58863"
+black = "000000"
 # resets the terminal color
 ENDC = '\033[0m'
 
@@ -30,9 +30,6 @@ king_arr = "0000011011110000"
 queen_arr = "0000011001100000"
 empty_arr = "0000000000000000"
 
-# engine = chess.engine.SimpleEngine.popen_uci(r"/home/pi/miker/Stockfish-sf_15/src/stockfish")
-engine = chess.engine.SimpleEngine.popen_uci(r"/opt/homebrew/bin/stockfish")
-engine.configure({"Threads": 4})
 
 
 class Canvas():
@@ -80,11 +77,6 @@ class Canvas():
     def lumos(self):
         lumos.push(self.the_canvas, 1)
 
-
-
-board = chess.Board()
-canvas = Canvas()
-
 def create_piece(arr, back_color, piece_color):
     result = ""
     assert len(arr) == 16
@@ -104,6 +96,8 @@ def print_pixel(r,g,b):
     print("\x1B[48;2;" + f"{rh};{gh};{bh}m", ENDC, end="")
 
 
+board = chess.Board()
+canvas = Canvas()
 knight = create_piece(knight_arr, black, white_piece)
 rook = create_piece(rook_arr, black, white_piece)
 pawn = create_piece(pawn_arr, black, white_piece)
@@ -193,7 +187,7 @@ def get_board_frame(fen, black_board_color=black, white_board_color=white):
                 position = position + 1
 
 
-def game_loop(console_output=False, delay=2):
+def game_loop(engine, console_output=False, delay=2):
     if not console_output:
         import lumos
     output = canvas.print if console_output else canvas.lumos
@@ -201,6 +195,7 @@ def game_loop(console_output=False, delay=2):
     while 1:
         #moves = list(board.legal_moves)
         #move = moves[random.randint(0, len(moves)-1)]
+        logging.debug("getting move")
         result = engine.play(board, chess.engine.Limit(time=0.1))
         board.push(result.move)
         get_board_frame(board.fen())
@@ -234,8 +229,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "-x", "--verbose", help="Set logging to debug mode", action="store_true"
     )
+    parser.add_argument(
+            "-e", "--engine", 
+            help="Set the engine to use",
+            default=r"/home/pi/miker/Stockfish-sf_15/src/stockfish",
+            type=str,
+    )
     args = parser.parse_args()
     if args.verbose:
         logger.setLevel(logging.DEBUG)
 
-    game_loop(console_output=args.ascii, delay=10)
+    engine = chess.engine.SimpleEngine.popen_uci(args.engine)
+    engine.configure({"Threads": 4})
+
+    game_loop(engine, console_output=args.ascii, delay=10)
